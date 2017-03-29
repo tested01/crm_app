@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import LoginingScreen from './components/LoginingScreen';
+import Splash from './components/Splash';
 
 
 class App extends Component {
   render() {
-    return (<LoginingScreen />);
+    return (<Splash />);
   }
 }
 

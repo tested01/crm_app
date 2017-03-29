@@ -4,6 +4,7 @@ import {
   View
 } from 'react-native';
 import Swiper from 'react-native-swiper';
+import LoginingScreen from './LoginingScreen';
 
 class Splash extends Component {
   constructor(props) {
@@ -34,13 +35,7 @@ class Splash extends Component {
   }
 
   renderContent() {
-    return (
-      <View>
-       <Text>
-       "ww"
-       </Text>
-      </View>
-    );
+    return (<LoginingScreen/>);
   }
 
 
