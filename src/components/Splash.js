@@ -35,7 +35,7 @@ class Splash extends Component {
   }
 
   renderContent() {
-    return (<LoginingScreen/>);
+    return (<LoginingScreen />);
   }
 
 

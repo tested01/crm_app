@@ -1,16 +1,55 @@
 import React, { Component } from 'react';
 import { Text } from 'react-native';
 import firebase from 'firebase';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { loginSuccess } from '../actions/index';
 import { CustomizedButton, MaterialCard, TransparentCardSection, NoLabelInput, Spinner } from './common';
 
 class LoginForm extends Component {
-  state = { email: '', password: '', error: '', loading: false };
 
+  constructor(props) {
+    super(props);
+
+    this.onLoginSuccess.bind(this);
+    this.onLoginFail.bind(this);
+  }
+  state = { email: '', password: '', error: '', loading: false };
   onButtonPress() {
     const { email, password } = this.state;
 
     this.setState({ error: '', loading: true });
 
+
+    fetch('http://localhost:3000/users/login', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }) })
+      .then((response) => {
+        if (response.status === 200) {
+          console.log(response.headers.get('x-auth'));
+          this.onLoginSuccess();
+          this.props.loginSuccess(true, response.headers.get('x-auth'));
+          console.log(response.status);
+          console.log(this.props.loginState);
+        } else {
+          this.onLoginFail();
+          this.props.loginSuccess(false, '');
+          console.log(this.props.loginState);
+        }
+      })
+      .catch((error) => {
+        console.log(this.props.loginState);
+        console.log(error);
+      });
+
+/*
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then(this.onLoginSuccess.bind(this))
       .catch(() => {
@@ -18,10 +57,11 @@ class LoginForm extends Component {
           .then(this.onLoginSuccess.bind(this))
           .catch(this.onLoginFail.bind(this));
       });
+  */
   }
 
   onLoginFail() {
-    this.setState({ error: 'Authentication Failed', loading: false });
+    this.setState({ error: '帳號或密碼錯誤', loading: false });
   }
 
   onLoginSuccess() {
@@ -93,4 +133,24 @@ const styles = {
   }
 };
 
-export default LoginForm;
+
+// Anything returned from this function will end up as props
+// on the LoginForm container
+function mapDispatchToProps(dispatch) {
+  // Whenever loginSuccess is called, the result should be passed
+  // to all of our reducers
+  return bindActionCreators({ loginSuccess }, dispatch);
+}
+
+function mapStateToProps(state) {
+  // Whever is returned will show up as props
+  // inside of LoginForm
+  return {
+    loginState: state.loginState
+  };
+}
+
+// Promote BoxList from a component to a container - it
+// needs to know about this new dispatch method, selectedNumBox & answerNum.
+// Make it available as a prop.
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
