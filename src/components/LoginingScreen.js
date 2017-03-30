@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { signOut } from '../actions/index';
@@ -25,14 +25,15 @@ class LoginingScreen extends Component {
   }
 
   render() {
-    const { viewStyle, blockStyle, screenStyle, colorlessViewStyle } = styles;
+    const { viewStyle, blockStyle, colorlessViewStyle } = styles;
+    //<MainScreen style={screenStyle} />
     if (!this.state.registering) {
       console.log(this.props.loginState);
       switch (this.props.loginState.success) {
         case true:
           return (
                   <View style={colorlessViewStyle}>
-                    <MainScreen style={screenStyle} />
+                    <Text>Logined pages here</Text>
                     <CustomizedButton
                     onPress={() => this.props.signOut(false, '')}
                     style={colorlessViewStyle}
@@ -47,7 +48,7 @@ class LoginingScreen extends Component {
                     <View style={blockStyle} />
                     <CustomerFooter
                      footerText="還沒有帳號嗎？ 註冊。"
-                     onPress={() => console.log('abcd')}
+                     onPress={() => this.setState({ registering: true })}
                     />
                     <Footer footerText="需要協助？" />
                     <Footer footerText="" />

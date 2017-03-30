@@ -1,12 +1,13 @@
 import { StackNavigator } from 'react-navigation';
-import RegisterStep3 from './RegisterStep3';
-import RegisterStep2 from './RegisterStep2';
+import Profile from './Profile';
+import SelectRole from './SelectRole';
 import RegisterStep1 from './RegisterStep1';
 
 const MainScreen = StackNavigator({
-  Main: { screen: RegisterStep1 },
-  Step1: { screen: RegisterStep2 },
-  Step2: { screen: RegisterStep3 }
+
+  Step1: { screen: SelectRole },
+  Step2: { screen: Profile },
+  Step3: { screen: RegisterStep1 }
 });
 
 export default MainScreen;
